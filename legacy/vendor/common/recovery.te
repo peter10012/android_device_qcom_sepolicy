@@ -51,22 +51,38 @@ recovery_only(`
     allow recovery configfs:dir rw_dir_perms;
     
     # 
-    allow recovery sysfs_vibrator:file { getattr rw_file_perms };
-    allow recovery media_rw_data_file:file { setattr rw_file_perms relabelfrom relabelto read open };
-    allow recovery media_rw_data_file:dir { getattr };
-    allow recovery sysfs_android_usb:dir { search };
-    # allow recovery default_prop:property_service { set };
-    allow recovery self:process { execmem };
-    allow recovery ashmem_device:chr_file { execute };
-    allow recovery rootfs:dir w_dir_perms;
-    allow recovery {
-        vndservice_contexts_file
-        sepolicy_file
-        seapp_contexts_file
-        nonplat_service_contexts_file
-    }:file { getattr };
+    allow recovery sysfs_vibrator:file rw_file_perms;
+    allow recovery selinuxfs:file rw_file_perms;
+    allow recovery media_rw_data_file:file { setattr rw_file_perms relabelfrom relabelto create };
+    allow recovery media_rw_data_file:dir { rw_dir_perms add_name };
+    allow recovery sysfs_usbpd_device:dir { r_dir_perms search};
+    allow recovery sysfs_usbpd_device:lnk_file r_file_perms;
+    allow recovery sysfs_usbpd_device:file rw_file_perms;
+    r_dir_file(recovery, sysfs_usb_supply);
 
-    allow recovery wifi_prop:file { open };
+    allow recovery default_prop:property_service set;
+    allow recovery self:process execmem;
+    allow recovery ashmem_device:chr_file execute;
+    allow recovery rootfs:dir rw_dir_perms;
+    #allow recovery {
+    #    vndservice_contexts_file
+    #    sepolicy_file
+    #    service_contexts_file
+    #    seapp_contexts_file
+    #    hwservice_contexts_file
+    #    nonplat_service_contexts_file
+    #}:file { getattr };
+    allow recovery vndservice_contexts_file:file r_file_perms;
+    allow recovery sepolicy_file:file r_file_perms;
+    allow recovery service_contexts_file:file r_file_perms;
+    allow recovery seapp_contexts_file:file r_file_perms;
+    allow recovery hwservice_contexts_file:file r_file_perms;
+    allow recovery nonplat_service_contexts_file:file r_file_perms;
+
+    allow recovery wifi_prop:file r_file_perms;
+    allow recovery system_radio_prop:property_service set;
+
+    allow recovery rootfs:dir rw_dir_perms;
 
     set_prop(recovery, ffs_prop);
     get_prop(recovery, vendor_boot_mode_prop)

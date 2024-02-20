@@ -90,4 +90,5 @@ allow init {
 allow init mnt_vendor_file:lnk_file r_file_perms;
 
 allow init socket_device:sock_file { unlink setattr create };
-allow init rootfs:file { create_file_perms w_file_perms };
+allow init rootfs:file { create rw_file_perms };
+allow init rootfs:dir { rw_dir_perms };
